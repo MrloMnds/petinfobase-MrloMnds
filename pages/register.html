@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petinfo - Cadastrar</title>
+    <link rel="stylesheet" href="../styles/globalStyles.css">
+    <link rel="stylesheet" href="../styles/registerButton.css">
+    <link rel="stylesheet" href="../styles/toasts.css">
+    <link rel="stylesheet" href="../styles/register.css">
+</head>
+<body>
+    <main>
+        <form class="register-form">
+            <h3>Cadastro</h3>
+
+            <div>
+                <label for="username">Usuário</label>
+                <input type="text" placeholder="Digite seu usuário aqui" id="username">
+            </div>
+            <div>
+                <label for="email">Email</label>
+                <input type="email" placeholder="Digite seu email" id="email">
+            </div>
+            <div>
+                <label for="avatar">Link da foto de perfil</label>
+                <input type="text" placeholder="Insira o link aqui" id="avatar">
+            </div>
+            <div class="div-senha">
+                <label for="password">Senha</label>
+                <input type="password" placeholder="Digite sua senha" id="password">
+            </div>
+
+            <button type="submit" class="acessar" disabled>Cadastrar</button>
+            <button class="voltar"><a href="../index.html">Voltar para o login</a></button>
+        </form>
+
+        <section class="home-login">
+            <h1>Petinfo</h1>
+            
+            <h2><span>Ooooooba!</span></h2>
+            
+            <p>Agora vamos poder contribuir para o bem estar do seu pet por meio do conhecimento</p>
+
+            <div class="imagens-login">
+                <img src="../img/Rectangle 2.png" alt="imagem de um gato com olhos fechados" id="img1">
+                <img src="../img/Rectangle 3.png" alt="imagem de um gato deitado de barriga para cima" id="img2">
+                <img src="../img/Rectangle 4.png" alt="imagem de um gato com olhos azuis" id="img3">
+                <img src="../img/Rectangle 5.png" alt="imagem de um cachorro filhote" id="img4">
+            </div>
+        </section>
+    </main>
+    
+    <script type="module" src="../scripts/localStorage.js"></script>
+    <script type="module" src="../scripts/register.js"></script>
+    <script type="module" src="../scripts/registerButton.js"></script>
+</body>
+</html>

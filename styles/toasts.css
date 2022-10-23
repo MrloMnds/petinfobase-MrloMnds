@@ -1,0 +1,36 @@
+.input-error {
+    border: solid 2px var(--alert100);
+}
+.error-message {
+    color: var(--alert100);
+    font-size: 0.875rem;
+}
+
+.toast-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 4px;
+    padding: 21px 32px;
+    gap: 21px;
+    max-width: 400px;
+    flex-wrap: wrap;
+}
+
+.toast-container>div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.toast-container>div>img {
+    height: 25px;
+}
+.toast-container>div>h3 {
+    font-size: 1rem;
+}
+.toast-container>p, .toast-container>a {
+    font-size: 0.875rem;
+}

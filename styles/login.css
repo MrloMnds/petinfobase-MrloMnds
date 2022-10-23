@@ -1,0 +1,114 @@
+.home-login {
+    display: flex;
+    flex-direction: column;
+    max-width: 40%;
+    gap: 30px;
+}
+.home-login>p {
+    font-size: 1rem;
+    color: var(--gray300);
+}
+
+.login-form {
+    border: 1px solid var(--gray600);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    max-width: 40%;
+    gap: 25px;
+    padding: 24px;
+}
+.login-form>h3 {
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 30px;
+}
+.login-form>div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.login-form>div>label {
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 24px;
+}
+.login-form>div>input {
+    border: 1px solid var(--gray600);
+    border-radius: 4px;
+    height: 44px;
+    padding-left: 10px;
+    background-color: var(--gray800);
+}
+
+.imagens-login {
+    position: relative;
+    min-height: 15vw;
+    width: 100%;
+}
+#img4 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 15vw;
+}
+#img3 {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 13vw;
+}
+#img1, #img2 {
+    width: 6vw;
+}
+
+.acessar {
+    color: white;
+    background-color: var(--brand200);
+    height: 44px;
+    border: none;
+    border-radius: 4px;
+}
+.acessar:hover {
+    cursor: pointer;
+}
+.acessar:disabled {
+    color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 4px;
+    background-color: var(--brand100);
+}
+.acessar:disabled:hover {
+    cursor: default;
+}
+
+.centralizado {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.centralizado>h4 {
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 21px;
+}
+.centralizado>p {
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 21px;
+    color: var(--gray300);
+}
+
+.cadastro {
+    background-color: white;
+    border: solid 1px var(--gray600);
+    height: 44px;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: black;
+}
+.cadastro:hover {
+    cursor: pointer;
+}

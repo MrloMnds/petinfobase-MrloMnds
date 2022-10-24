@@ -1,9 +1,10 @@
 import { getLocalStorage } from "./localStorage.js";
-import { getPosts } from "./requests.js";
+import { getPosts, setMiniAvatarAndId } from "./requests.js";
 import { postToast } from "./toasts.js";
 
 const urlBase = "http://localhost:3333/";
 
+// verifica se o usuario possui o token de permissao no localStorage
 function verifyPermission() {
   const user = getLocalStorage();
 
@@ -12,13 +13,17 @@ function verifyPermission() {
   }
 }
 verifyPermission();
+setMiniAvatarAndId();
 
+//renderiza todos os posts que foram feitos
 async function renderPosts() {
   const postsList = await getPosts();
   const feed = document.querySelector(".lista-posts");
+  await homePageAvatarImg();
 
   postsList.forEach((element) => {
     const li = document.createElement("li");
+    const divUserDateButtons = document.createElement("div");
     const divUserDate = document.createElement("div");
     const miniAvatar = document.createElement("img");
     const username = document.createElement("h3");
@@ -27,8 +32,18 @@ async function renderPosts() {
     const content = document.createElement("p");
     const link = document.createElement("a");
 
+    li.style.display = "flex";
+    li.style.flexDirection = "column";
+    li.style.gap = "1vh";
+    divUserDateButtons.style.display = "flex";
+    divUserDateButtons.style.justifyContent = "space-between";
+    divUserDate.style.display = "flex";
+    divUserDate.style.alignItems = "center";
+    divUserDate.style.gap = "0.4vw";
     miniAvatar.src = element.user.avatar;
-    miniAvatar.style.height = '5vh'
+    miniAvatar.style.height = "5vh";
+    miniAvatar.style.borderRadius = "50%";
+    feed.style.listStyle = "none";
     username.innerText = element.user.username;
 
     let month = element.createdAt[5] + element.createdAt[6];
@@ -38,6 +53,7 @@ async function renderPosts() {
       element.createdAt[2] +
       element.createdAt[3];
 
+    // Trata as datas dos posts
     if (month == 1) {
       date.innerText = ` | Janeiro de ${year}`;
     } else if (month == 2) {
@@ -67,11 +83,36 @@ async function renderPosts() {
     title.innerText = element.title;
     content.innerText = element.content;
     link.innerText = "Acessar publicação";
+    link.classList = "link";
 
+    divUserDateButtons.append(divUserDate);
     divUserDate.append(miniAvatar, username, date);
-    li.append(divUserDate, title, content, link);
+    li.append(divUserDateButtons, title, content, link);
     feed.append(li);
 
+    //adiciona os botoes "editar" e "excluir"
+    if (JSON.parse(localStorage.getItem("id")) == element.user.id) {
+      const divEditDelete = document.createElement("div");
+      const editButton = document.createElement("button");
+      const deleteButton = document.createElement("button");
+
+      editButton.innerText = "Editar";
+      editButton.classList = "edit-button";
+      deleteButton.classList = "delete-button";
+      deleteButton.innerText = "Excluir";
+      divEditDelete.classList = "div-edit-delete";
+
+      divEditDelete.append(editButton, deleteButton);
+      divUserDateButtons.append(divEditDelete);
+    }
+
+    //Checa a quantidade de caracteres no content
+    if (content.innerText.length > 145) {
+      console.log(content.innerText.length);
+      content.classList = "over-145";
+    }
+
+    //event listener Acessar publicacao
     link.addEventListener("click", () => {
       const body = document.querySelector("body");
       const modalWrapper = document.createElement("section");
@@ -85,7 +126,7 @@ async function renderPosts() {
       const content2 = document.createElement("p");
 
       miniAvatar2.src = element.user.avatar;
-      miniAvatar2.style.height = '5vh'
+      miniAvatar2.style.height = "5vh";
       username2.innerText = element.user.username;
 
       let month = element.createdAt[5] + element.createdAt[6];
@@ -123,6 +164,8 @@ async function renderPosts() {
 
       title2.innerText = element.title;
       content2.innerText = element.content;
+      content2.style.textOverflow = "ellipsis";
+      content2.style.overflow = "hidden";
       closeButton2.innerText = "X";
 
       modalWrapper.classList = "create-modal-wrapper";
@@ -142,6 +185,7 @@ async function renderPosts() {
 }
 renderPosts();
 
+// Faz a comunicacao com a API para adicionar um post
 async function createPost(body) {
   const localStorage = await getLocalStorage();
   const options = {
@@ -171,7 +215,9 @@ async function createPost(body) {
 }
 
 const createPostButton = document.querySelector(".criar-publicacao");
+const logoutButton = document.querySelector(".logout");
 
+//Pega as infos dos inputs e transforma em um obj
 function publish(event) {
   event.addEventListener("submit", async (target) => {
     target.preventDefault();
@@ -189,6 +235,7 @@ function publish(event) {
   });
 }
 
+//event listener para criar um post novo
 createPostButton.addEventListener("click", () => {
   const body = document.querySelector("body");
   const modalWrapper = document.createElement("section");
@@ -257,3 +304,23 @@ createPostButton.addEventListener("click", () => {
   modalWrapper.append(modalContainer);
   body.append(modalWrapper);
 });
+
+//event listener que apaga o localStorage e faz o usuario voltar para a pagina de login
+logoutButton.addEventListener("click", () => {
+  localStorage.clear();
+  window.location.replace("../index.html");
+});
+
+//Carrega o avatar do usuario
+async function homePageAvatarImg() {
+  const header = document.querySelector(".avatar-button-div");
+  const avatarImg = document.createElement("img");
+
+  const avatarSrc = (await JSON.parse(localStorage.getItem("avatar"))) || "";
+
+  avatarImg.classList = "home-page-avatar";
+  avatarImg.src = await avatarSrc;
+  avatarImg.alt = "mini avatar";
+
+  header.append(avatarImg);
+}

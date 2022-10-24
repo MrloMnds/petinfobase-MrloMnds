@@ -1,0 +1,92 @@
+.lista-posts {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+}
+
+main {
+    max-width: 900px;
+    margin: 20px auto;
+}
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+header>h1 {
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 3rem;
+    margin: 40px 0;
+}
+header>div{
+    display: flex;
+    align-items: center;
+}
+header>div>button {
+    height: 4vh;
+    margin-right: 10px;
+    border: none;
+    background-color: var(--brand100);
+    color: white;
+    border-radius: 4px;
+    padding: 6px;
+}
+header>div>button:hover {
+    cursor: pointer;
+    background-color: var(--brand200);
+}
+.home-page-avatar {
+    height: 5vh;
+    border-radius: 50%;
+}
+
+
+/* Feed */
+.feed>h2 {
+    display: flex;
+    align-items: center;
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 30px;
+    background-color: #F8F9FA;
+    width: 250vw;
+    height: 8vh;
+    transform: translateX(-30vw);
+    padding-left: 30vw;
+}
+.edit-button, .delete-button {
+    border: 1px solid var(--gray600);
+    border-radius: 4px;
+    padding: 5px;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+.edit-button {
+    background-color: white;
+}
+.delete-button {
+    background-color: var(--gray700);
+    color: var(--gray400);
+}
+.edit-button:hover, .delete-button:hover {
+    cursor: pointer;
+}
+.div-edit-delete {
+    display: flex;
+    gap: 10px;
+}
+.link {
+    color: var(--brand100);
+
+}
+.link:hover {
+    cursor: pointer;
+}
+
+.over-145 {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 80ch;
+}

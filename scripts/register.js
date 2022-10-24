@@ -2,6 +2,7 @@ import { register } from "./requests.js";
 
 const formRegister = document.querySelector('.register-form')
 const button = document.querySelector('.acessar')
+const button2 = document.querySelector('.voltar')
 const elements2 = [...formRegister.elements]
 
 // evento no botao de submit, para checar se os dados passados no input estao corretos
@@ -31,4 +32,8 @@ formRegister.addEventListener('keyup', () => {
     if (email.value == '' || password.value == '' && photo.value == '' && username.value == '') {
         button.setAttribute('disabled', true)
     }
+})
+
+button2.addEventListener('click', () => {
+    window.location.replace('../index.html')
 })

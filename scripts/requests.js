@@ -4,6 +4,29 @@ import { toast, incorrectValues } from "./toasts.js";
 const registerButton = document.querySelector(".acessar");
 const urlBase = "http://localhost:3333/";
 
+// Add item avatar com url do avatar no localStorage
+async function setMiniAvatarAndId() {
+  const localStorage2 = await getLocalStorage();
+  const options = {
+    headers: {
+      Authorization: `Bearer ${localStorage2.token}`,
+    },
+  };
+
+  try {
+    const request = await fetch(urlBase + "users/profile", options);
+    const response = await request.json();
+
+    const id = await response.id;
+    const avatar = await response.avatar;
+
+    localStorage.setItem("avatar", JSON.stringify(avatar));
+    localStorage.setItem("id", JSON.stringify(id));
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 // Faz as verificacoes para efetuar o login
 async function login(body) {
   const options = {
@@ -23,9 +46,15 @@ async function login(body) {
       window.location.replace("../pages/homePage.html");
     } else {
       incorrectValues();
+      registerButton.innerHTML = "";
+      registerButton.innerText = "Cadastrar";
+      registerButton.classList.remove("loading");
     }
   } catch (err) {
     incorrectValues();
+    registerButton.innerHTML = "";
+    registerButton.innerText = "Cadastrar";
+    registerButton.classList.remove("loading");
   }
 }
 
@@ -83,4 +112,4 @@ async function getPosts() {
   }
 }
 
-export { login, register, getPosts };
+export { login, register, getPosts, setMiniAvatarAndId };

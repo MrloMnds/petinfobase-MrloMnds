@@ -32,6 +32,7 @@ async function renderPosts() {
     const content = document.createElement("p");
     const link = document.createElement("a");
 
+    li.setAttribute('id', element.id)
     li.style.display = "flex";
     li.style.flexDirection = "column";
     li.style.gap = "1vh";
@@ -90,7 +91,7 @@ async function renderPosts() {
     li.append(divUserDateButtons, title, content, link);
     feed.append(li);
 
-    //adiciona os botoes "editar" e "excluir"
+    //adiciona os botoes "editar" e "excluir" / add event listener
     if (JSON.parse(localStorage.getItem("id")) == element.user.id) {
       const divEditDelete = document.createElement("div");
       const editButton = document.createElement("button");
@@ -98,9 +99,20 @@ async function renderPosts() {
 
       editButton.innerText = "Editar";
       editButton.classList = "edit-button";
+      editButton.setAttribute('id', element.id)
       deleteButton.classList = "delete-button";
       deleteButton.innerText = "Excluir";
+      deleteButton.setAttribute('id', element.id)
       divEditDelete.classList = "div-edit-delete";
+    
+      //event listener para fazer o patch do conteudo postado
+      editButton.addEventListener('click', async () => {
+        openEditModal(element.title, element.content, element.id)
+      })
+
+      deleteButton.addEventListener('click', () => {
+        //
+      })
 
       divEditDelete.append(editButton, deleteButton);
       divUserDateButtons.append(divEditDelete);
@@ -108,7 +120,6 @@ async function renderPosts() {
 
     //Checa a quantidade de caracteres no content
     if (content.innerText.length > 145) {
-      console.log(content.innerText.length);
       content.classList = "over-145";
     }
 
@@ -171,6 +182,7 @@ async function renderPosts() {
       modalWrapper.classList = "create-modal-wrapper";
       modalContainer.classList = "create-modal-container";
       closeButton2.classList = "create-button close-button";
+      divUserDate2.classList = 'div-acessar-post'
 
       closeButton2.addEventListener("click", () => {
         modalWrapper.remove();
@@ -186,7 +198,7 @@ async function renderPosts() {
 renderPosts();
 
 // Faz a comunicacao com a API para adicionar um post
-async function createPost(body) {
+async function createPost(body, modal) {
   const localStorage = await getLocalStorage();
   const options = {
     method: "POST",
@@ -201,6 +213,8 @@ async function createPost(body) {
     const request = await fetch(urlBase + "posts/create", options);
 
     if (request.ok) {
+      modal.remove()
+
       postToast("successful", "Post criado com sucesso!");
 
       setTimeout(() => {
@@ -218,8 +232,8 @@ const createPostButton = document.querySelector(".criar-publicacao");
 const logoutButton = document.querySelector(".logout");
 
 //Pega as infos dos inputs e transforma em um obj
-function publish(event) {
-  event.addEventListener("submit", async (target) => {
+function publish(event, modal) {
+  event.addEventListener("submit", async target => {
     target.preventDefault();
 
     const body = {};
@@ -231,12 +245,153 @@ function publish(event) {
         body[element.id] = element.value;
       }
     });
-    await createPost(body);
+    await createPost(body, modal);
   });
 }
 
 //event listener para criar um post novo
-createPostButton.addEventListener("click", () => {
+createPostButton.addEventListener("click", () => createPostModal());
+
+//event listener que apaga o localStorage e faz o usuario voltar para a pagina de login
+logoutButton.addEventListener("click", () => {
+  localStorage.removeItem('user');
+  localStorage.removeItem('avatar');
+  localStorage.removeItem('id');
+  window.location.replace("../index.html");
+});
+
+//Carrega o avatar do usuario
+async function homePageAvatarImg() {
+  const header = document.querySelector(".avatar-button-div");
+  const avatarImg = document.createElement("img");
+
+  const avatarSrc = (await JSON.parse(localStorage.getItem("avatar"))) || "";
+
+  avatarImg.classList = "home-page-avatar";
+  avatarImg.src = await avatarSrc;
+  avatarImg.alt = "mini avatar";
+
+  header.append(avatarImg);
+}
+
+//atualiza os posts editados
+async function patch(id, event, modal) {
+  event.addEventListener("submit", async target => {
+    target.preventDefault()
+    
+    const body = {}
+
+    const elements = [...event.elements];
+
+    elements.forEach((element) => {
+      if (element.tagName === "INPUT" && element.value != "") {
+        body[element.id] = element.value;
+      }
+    });
+
+    await editPost(id, body, modal)
+  })
+}
+
+//comunica com a API para fzer o patch
+async function editPost(id, edit, modal) {
+  const localStrg = await getLocalStorage()
+  const options = {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStrg.token}`
+    },
+    body: JSON.stringify(edit)
+  }
+  
+  try {
+    await fetch(urlBase + 'posts/' + id, options)
+
+    modal.remove()
+    
+    postToast('successful', 'Post editado')
+    
+    setTimeout(() => {
+      window.location.replace("../pages/homePage.html");
+    }, 3000);
+    
+  } catch(err) {
+    console.log(err)
+  }
+
+}
+
+//abre o modal de edicao
+async function openEditModal(editTitle, editContent, editId) {
+  const body = document.querySelector("body");
+  const modalWrapper = document.createElement("section");
+  const modalContainer = document.createElement("form");
+  const title = document.createElement("h2");
+  const divPostTitle = document.createElement("div");
+  const titleLabel = document.createElement("label");
+  const titleInput = document.createElement("input");
+  const divPostDescription = document.createElement("div");
+  const descriptionLabel = document.createElement("label");
+  const descriptionInput = document.createElement("input");
+  const closeButton = document.createElement("button");
+  const divButtons = document.createElement("div");
+  const cancelButton = document.createElement("button");
+  const publishButton = document.createElement("button");
+
+  title.innerText = "Edição";
+  titleLabel.innerText = "Título do post";
+  titleInput.value = editTitle;
+  titleInput.setAttribute("id", "title");
+  descriptionLabel.innerText = "Conteúdo do post";
+  descriptionInput.value = editContent
+  descriptionInput.setAttribute("id", "content");
+
+  closeButton.innerText = "X";
+  closeButton.setAttribute("type", "button");
+  cancelButton.innerText = "Cancelar";
+  cancelButton.setAttribute("type", "button");
+  publishButton.innerText = "Publicar";
+  publishButton.setAttribute("type", "submit");
+
+  modalWrapper.classList = "create-modal-wrapper";
+  modalContainer.classList = "create-modal-container";
+  divPostTitle.classList = "create-div-title";
+  divPostDescription.classList = "create-div-title";
+  titleLabel.classList = "create-label";
+  descriptionLabel.classList = "create-label";
+  titleInput.classList = "create-input";
+  descriptionInput.classList = "create-input";
+  divButtons.classList = "create-div-buttons";
+  closeButton.classList = "create-button close-button";
+  cancelButton.classList = "create-button";
+  publishButton.classList = "create-publish-button";
+
+  closeButton.addEventListener("click", () => {
+    modalWrapper.remove();
+  });
+  cancelButton.addEventListener("click", () => {
+    modalWrapper.remove();
+  });
+
+  divButtons.append(cancelButton, publishButton);
+  divPostTitle.append(titleLabel, titleInput);
+  divPostDescription.append(descriptionLabel, descriptionInput);
+  modalContainer.append(
+    title,
+    divPostTitle,
+    divPostDescription,
+    divButtons,
+    closeButton
+  );
+  modalWrapper.append(modalContainer);
+  body.append(modalWrapper);
+
+  patch(editId, modalContainer, modalWrapper)
+}
+
+// abre o modal de criar um post
+function createPostModal() {
   const body = document.querySelector("body");
   const modalWrapper = document.createElement("section");
   const modalContainer = document.createElement("form");
@@ -289,7 +444,7 @@ createPostButton.addEventListener("click", () => {
     modalWrapper.remove();
   });
 
-  publish(modalContainer);
+  publish(modalContainer, modalWrapper);
 
   divButtons.append(cancelButton, publishButton);
   divPostTitle.append(titleLabel, titleInput);
@@ -303,24 +458,4 @@ createPostButton.addEventListener("click", () => {
   );
   modalWrapper.append(modalContainer);
   body.append(modalWrapper);
-});
-
-//event listener que apaga o localStorage e faz o usuario voltar para a pagina de login
-logoutButton.addEventListener("click", () => {
-  localStorage.clear();
-  window.location.replace("../index.html");
-});
-
-//Carrega o avatar do usuario
-async function homePageAvatarImg() {
-  const header = document.querySelector(".avatar-button-div");
-  const avatarImg = document.createElement("img");
-
-  const avatarSrc = (await JSON.parse(localStorage.getItem("avatar"))) || "";
-
-  avatarImg.classList = "home-page-avatar";
-  avatarImg.src = await avatarSrc;
-  avatarImg.alt = "mini avatar";
-
-  header.append(avatarImg);
 }

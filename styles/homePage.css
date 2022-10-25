@@ -88,5 +88,7 @@ header>div>button:hover {
 .over-145 {
     text-overflow: ellipsis;
     overflow: hidden;
-    max-width: 80ch;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
 }

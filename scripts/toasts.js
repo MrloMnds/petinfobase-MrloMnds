@@ -65,7 +65,7 @@ function postToast(status, message) {
     title.style.color = "var(--sucess100)";
     icon.src = "/img/success-svgrepo-com.svg";
     icon.alt = "Icone verde com um check branco dentro";
-    msg.innerText = "Post criado, a partir de agora aparecerá no feed";
+    msg.innerText = "Post criado/editado, a partir de agora aparecerá no feed";
     titleContainer.append(icon, title);
     container.append(titleContainer, msg);
     body.append(container);

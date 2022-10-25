@@ -20,6 +20,14 @@
     position: relative;
     gap: 20px;
 }
+.div-acessar-post {
+    display: flex;
+    align-items: center;
+    gap: 0.4vw;
+}
+.create-modal-container>div>img {
+    border-radius: 50%;
+}
 .create-modal-container>h2 {
     font-size: 1.25rem;
     font-weight: 500;

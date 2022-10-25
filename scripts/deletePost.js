@@ -3,6 +3,7 @@ import { deletePostToast } from "./toasts.js";
 
 const base_url = "http://localhost:3333/";
 
+// Abre o modal para exclusao de post
 async function deletePostModal(id) {
   const body = document.querySelector("body");
   const modalWrapper = document.createElement("section");
@@ -49,6 +50,7 @@ async function deletePostModal(id) {
   deletePost(modalContainer, id, modalWrapper);
 }
 
+// Faz o request de delete para a API 
 async function deleteRequest(id, modal) {
   const localStrg = await getLocalStorage();
 
@@ -74,6 +76,7 @@ async function deleteRequest(id, modal) {
   }
 }
 
+// previne o comportamento padrao do form e faz o request
 function deletePost(event, id, modal) {
   event.addEventListener("submit", async (target) => {
     target.preventDefault();

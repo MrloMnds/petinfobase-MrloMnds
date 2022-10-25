@@ -390,7 +390,7 @@ async function openEditModal(editTitle, editContent, editId) {
   patch(editId, modalContainer, modalWrapper)
 }
 
-// abre o modal de criar um post
+//abre o modal de criar um post
 function createPostModal() {
   const body = document.querySelector("body");
   const modalWrapper = document.createElement("section");

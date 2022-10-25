@@ -80,4 +80,34 @@ function postToast(status, message) {
   }
 }
 
-export { incorrectValues, toast, postToast };
+function deletePostToast(status, message) {
+  const body = document.querySelector("body");
+  const container = document.createElement("div");
+  const titleContainer = document.createElement("div");
+  const title = document.createElement("h3");
+  const icon = document.createElement("img");
+  const msg = document.createElement("p");
+
+  container.classList = "toast-container";
+  title.innerText = message;
+
+  if (status == "successful") {
+    title.style.color = "var(--sucess100)";
+    icon.src = "/img/success-svgrepo-com.svg";
+    icon.alt = "Icone verde com um check branco dentro";
+    msg.innerText = "O post selecionado para exlusão foi deletado, a partir de agora não aparecerá no seu feed";
+    titleContainer.append(icon, title);
+    container.append(titleContainer, msg);
+    body.append(container);
+  } else {
+    title.style.color = "var(--alert100)";
+    icon.src = "/img/error-svgrepo-com.svg";
+    icon.alt = "Icone vermelho com um X branco dentro";
+    msg.innerText = "Algo deu errado na criação do post, tente novamente";
+    titleContainer.append(icon, title);
+    container.append(titleContainer, msg);
+    body.append(container);
+  }
+}
+
+export { incorrectValues, toast, postToast, deletePostToast };

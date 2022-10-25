@@ -56,7 +56,7 @@ header>div>button:hover {
     transform: translateX(-30vw);
     padding-left: 30vw;
 }
-.edit-button, .delete-button {
+.edit-button, .delete-button, .confirm-button {
     border: 1px solid var(--gray600);
     border-radius: 4px;
     padding: 5px;
@@ -70,7 +70,7 @@ header>div>button:hover {
     background-color: var(--gray700);
     color: var(--gray400);
 }
-.edit-button:hover, .delete-button:hover {
+.edit-button:hover, .delete-button:hover, .confirm-button:hover {
     cursor: pointer;
 }
 .div-edit-delete {
@@ -91,4 +91,9 @@ header>div>button:hover {
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
+}
+
+.confirm-button {
+    background-color: var(--alert100);
+    color: white;
 }

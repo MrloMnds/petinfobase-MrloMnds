@@ -98,7 +98,7 @@ async function getPosts() {
   const options = {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${localStorage.token}`,
+      'Authorization': `Bearer ${localStorage.token}`,
     },
   };
 

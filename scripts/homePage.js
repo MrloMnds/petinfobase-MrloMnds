@@ -1,6 +1,7 @@
 import { getLocalStorage } from "./localStorage.js";
 import { getPosts, setMiniAvatarAndId } from "./requests.js";
 import { postToast } from "./toasts.js";
+import { deletePostModal } from "./deletePost.js";
 
 const urlBase = "http://localhost:3333/";
 
@@ -110,8 +111,8 @@ async function renderPosts() {
         openEditModal(element.title, element.content, element.id)
       })
 
-      deleteButton.addEventListener('click', () => {
-        //
+      deleteButton.addEventListener('click', async () => {
+        deletePostModal(element.id)
       })
 
       divEditDelete.append(editButton, deleteButton);
